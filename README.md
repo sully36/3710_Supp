@@ -12,7 +12,7 @@
 
 ## Description of Model
 
-The model constructed was a Variation Autoencoder (VAE). A VAE is based off the structure of an autoencoder, with extra steps of normalisation inbetween. An autoencoder combines two types of Convolutional Nural Networks (CNN) togther; and encoder and decoder. CNN have muliple convolutional layers, usually with either a max pooling (decrease in the size of the data) or an upsampling (increasing in the size of the data) to connect layers. An encoder starts with the dataset and through multiple convolutional layers and max pooling reults with an output of much smaller size. A decoder is the opposite. Starting with the input, it will go through the convolutional layers and upsampling to create an output with a larger size. An autoencoder is an encoder which has its output fed through a decoder.
+The model constructed was a Variation Autoencoder (VAE). A VAE is based off the structure of an autoencoder, with extra steps of normalisation inbetween. An autoencoder combines two types of Convolutional Nural Networks (CNN) together; and encoder and decoder. CNN have multiple convolutional layers, usually with either a max pooling (decrease in the size of the data) or an upsampling (increasing in the size of the data) to connect layers. An encoder starts with the dataset and through multiple convolutional layers and max pooling results with an output of much smaller size. A decoder is the opposite. Starting with the input, it will go through the convolutional layers and upsampling to create an output with a larger size. An autoencoder is an encoder which has its output fed through a decoder.
 
 ---
 
@@ -20,11 +20,11 @@ The model constructed was a Variation Autoencoder (VAE). A VAE is based off the 
 
 The ADNI dataset contains information of three different key groups (as referenced [here](https://adni.loni.usc.edu/)):
 
-* completly normal healthy elders
-* elders with mild memory problems or mild cognitive imparements
+* completely normal healthy elders
+* elders with mild memory problems or mild cognitive impairments
 * elders with Alzheimer's disease dementia
 
-The data that we will be analsying is of the magnetic resonanace images (MRI) of the brain ivolving these three categories of participants. 
+The data that we will be analyzing is of the magnetic resonance images (MRI) of the brain involving these three categories of participants. 
 
 ---
 
@@ -36,6 +36,19 @@ The data that we will be analsying is of the magnetic resonanace images (MRI) of
 
 **train.py:** The main file used to run the project which will train the dataset and produce all outputs required.
 
+---
+
+## Required for Running
+
+### File Location 
+Please add the dataset given to us within this directory and do not change any names. The pathway that will be prediminantly used is the ./AD_NC/train/AD pathway.
+
+### Versions Required 
+```commandline
+Tensorflow: 2.10.0
+Matplotlib: 3.5.3
+
+```
 ---
 
 ## Outputs of Trained Model
@@ -58,9 +71,9 @@ The data that we will be analsying is of the magnetic resonanace images (MRI) of
 
 **Question:**
 
-```
-Do your visulisations show any relationship or seperation with respect between the Alzheimert's siease and healthy groups?
-```
+
+Do your visualizations show any relationship or separation with respect between the Alzheimer's disease and healthy groups?
+
 
 **Answer:**
 
