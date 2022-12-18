@@ -3,37 +3,16 @@ VAE Model
 /author Jessica Sullivan
 """
 import tensorflow as tf
-import tensorflow_datasets as tfds
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, ReLU, LeakyReLU, Conv2D, Conv2DTranspose, BatchNormalization, Flatten, \
     Dense, Reshape
 from tensorflow.keras.initializers import GlorotNormal
 from tensorflow.keras import backend as K
-import matplotlib.pyplot as plt
-# import tensorflow_probability as tfp
-import numpy as np
-from IPython import display
-import time
-
-# parameters
-epochs = 20
-batch_size = 128
-kernel = 3
-depth = 12
-# input sizes
-latent_size = 2
-z_size = (latent_size,)
-input_shape = (xSize, ySize, 1)
-mse = tf.keras.losses.MeanSquaredError()
-
-# names
-model_name = "VAE-2D"
 
 
-# layers
 # define networks
 # generator network
-def decoder_network(input_shape, activation, name='D'):
+def decoder_network(input_shape, activation, depth, kernel, name='D'):
     """
     Decodes latent space into images
     """
@@ -52,7 +31,8 @@ def decoder_network(input_shape, activation, name='D'):
 
 
 # discriminator network
-def encoder_network(input_shape, z_dim, name='E'):
+# todo: check out what z_dim should be. Did i miss anything?
+def encoder_network(input_shape, depth, kernel, latent_size, name='E'):
     """
     Encodes images into latent space
     """
@@ -67,7 +47,7 @@ def encoder_network(input_shape, z_dim, name='E'):
     dense = Dense(1024, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
     dense = Dense(1024, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
     # usually latent_size needs to be 32 or 128 or something. he just did 2 to make plots easy.
-    latent = Dense(latent_size, kernal_initalizer=GlorotNormal())(dense)
+    latent = Dense(latent_size, kernel_initializer=GlorotNormal())(dense)
 
     return Model(inputs=input, outputs=latent, name=name)
 
@@ -112,13 +92,14 @@ def decoder_loss(y_true, y_pred):
     """
     Returns reconstruction loss as L2
     """
+    mse = tf.keras.losses.MeanSquaredError()
     return mse(y_true, y_pred)
 
 
 # The following block was doing the vae loss in two steps rather then at the same time
 
 @tf.function  # compiles function, much faster
-def train_step_z(images):
+def train_step_z(images, encoder, encoder_opt):
     with tf.GradientTape() as enc_tape:
         latent_codes = encoder(images, training=True)
         mmd_loss = encoder_loss(latent_codes)
@@ -128,12 +109,15 @@ def train_step_z(images):
 
 
 @tf.function  # compiles function, much faster
-def train_step_recon(images):
+def train_step_recon(images, encoder, decoder, decoder_opt):
     """
     The training step with the gradient tape (persistent). The switch allows for different training
     switch = 0 (compute all gradients and losses, default)
     switch = 1 (compute first gradient and loss)
     switch = 2 (compute second gradient and loss)
+    :param decoder_opt:
+    :param decoder:
+    :param encoder:
     :param images:
     :return:
     """
@@ -149,7 +133,7 @@ def train_step_recon(images):
 
 
 @tf.function  # compiles function, much faster
-def train_step_vae(images):
+def train_step_vae(images, encoder, decoder, vae, vae_opt):
     """
     The training step with the gradient tape (persistent). The switch allows for different training schedules.
     """
@@ -168,80 +152,19 @@ def train_step_vae(images):
     return loss
 
 
-# def generate_and_save_images(model, epoch, test_input):
-#     # Notice training is set to False
-#     # This is so all layers run in inference mode (batchnorm)
-#     predictions = model(test_input, training=False)
-#     fig = plt.figure(figsize=(8, 8))
-#
-#     for i in range(predictions.shape[0]):
-#         plt.subplot(4, 4, i + 1)
-#         plt.show(predictions[i, :, :, 0], cmap='gray')
-#         plt.axis('off')
-#     # plt.savefig(testing_path+'image_at_epoch_{:04d}.png'.format(epoch))
-#     plt.show()
+def build_vae(input_shape, z_size, latent_size, depth, kernel):
+    # build encoder
+    encoder = encoder_network(input_shape, depth, kernel, latent_size)
+    encoder.summary(line_length=133)
 
+    # build decoder
+    decoder = decoder_network(z_size, ReLU(), depth, kernel)
+    decoder.summary(line_length=133)
 
-def train(dataset, epochs):
-    losses = []
-    for epoch in range(1, epochs + 1):
-        start = time.time()
-        # put train loop here
-        loss = -1
-        batch_losses = 0
-        switch = 1  # eppoch%3
-        msg = ""
-        count = 0
-        for image_batch, labels_batch in dataset:
-            # loss = train_step(image_batch)
-            if switch == 0:  # optimise z
-                loss = train_step_z(image_batch)
-                msg = "optimise z"
-            elif switch == 2:  # optimise recon
-                loss = train_step_recon(image_batch)
-                msg = "optimise recon"
-            else:  # optimise vae
-                loss = train_step_vae(image_batch)
-                msg = "optimise vae"
-            batch_losses += loss
-            count += 1
-        # Produce images for the GIF as we go
-        display.clear_output(wait=True)
-        # generate_and_save_images(decoder, epoch, seed)
-
-        loss = batch_losses / count
-
-        print('Time for epoch {} (loss {}, {}) is {} sec'.format(epoch, loss, msg, time.time() - start))
-
-        losses.append(loss)
-
-    return losses
-
-
-# build decoder
-decoder = decoder_network(z_size, ReLU())
-decoder.summary(line_length=133)
-
-# build encoder
-encoder = encoder_network(input_shape, latent_size)
-encoder.summary(line_length=133)
-
-# build VAE
-input = Input(input_shape, name='vae_input')
-z = encoder(input)
-recon = decoder(z)
-vae = Model(inputs=input, outputs=recon, name='VAE')
-vae.summary(line_length=133)
-
-# build network model here
-
-# optimizers
-encoder_opt = tf.keras.optimizers.Adam(1e-4)
-decoder_opt = tf.keras.optimizers.Adam(1e-4)
-vae_opt = tf.keras.optimizers.Adam(1e-4)
-
-# to visualise progress of same set in the animated GIF
-num_examples_to_generate = 16
-seed = tf.random.normal([num_examples_to_generate, latent_size, 1])
-
-
+    # build VAE
+    input = Input(input_shape, name='vae_input')
+    z = encoder(input)
+    recon = decoder(z)
+    vae = Model(inputs=input, outputs=recon, name='VAE')
+    vae.summary(line_length=133)
+    return vae, encoder, decoder

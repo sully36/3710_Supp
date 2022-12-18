@@ -1,3 +1,8 @@
+"""
+Importing the dataset and doing any preprocessing that is required for sending it off.
+
+/author Jessica Sullivan
+"""
 import glob
 import tensorflow as tf
 from sklearn.utils import shuffle
@@ -28,7 +33,7 @@ def download_dataset(batch_size):
     # extra step in shakes vae example which changes them to nested numpy arrays
     # train_ds = tfds.as_numpy(train_ds)
 
-    return preprocess(train_ds)
+    return train_ds
 
 
 def preprocess(dataset):
