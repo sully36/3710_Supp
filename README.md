@@ -24,7 +24,7 @@ The ADNI dataset contains information of three different key groups (as referenc
 * elders with mild memory problems or mild cognitive impairments
 * elders with Alzheimer's disease dementia
 
-The data that we will be analyzing is of the magnetic resonance images (MRI) of the brain involving these three categories of participants. 
+The data that we will be analyzing is of the magnetic resonance images (MRI) of the brain involving these three categories of participants. The initial training will be on the scans with Alzheimer's disease , but we will also do it on those normal elders to compare. The dataset come as a directory with train and test sub directories. We will only use the train subdirectory, where the AD directory within the train subdirectory contains the MRI images of brains of people with Alzheimer's Disease. At the end we will come back to the NC directory to compare with those without Alzheimer's. The images seem to be of stze `240 x 256 pixles` each. 
 
 ---
 
@@ -40,15 +40,18 @@ The data that we will be analyzing is of the magnetic resonance images (MRI) of 
 
 ## Required for Running
 
-### File Location 
-Please add the dataset given to us within this directory and do not change any names. The pathway that will be prediminantly used is the ./AD_NC/train/AD pathway.
+### File Location
 
-### Versions Required 
+Please add the dataset given to us within this directory and do not change any names. The pathway that will be predominantly used is the `./AD_NC/train/AD` pathway.
+
+### Versions Required
+
 ```commandline
 Tensorflow: 2.10.0
 Matplotlib: 3.5.3
 
 ```
+
 ---
 
 ## Outputs of Trained Model
@@ -71,9 +74,7 @@ Matplotlib: 3.5.3
 
 **Question:**
 
-
 Do your visualizations show any relationship or separation with respect between the Alzheimer's disease and healthy groups?
-
 
 **Answer:**
 
