@@ -42,7 +42,7 @@ def train(dataset, vae, encoder, decoder):
         switch = 1  # eppoch%3
         msg = ""
         count = 0
-        for image_batch, labels_batch in dataset:
+        for image_batch in dataset:
             # loss = train_step(image_batch)
             if switch == 0:  # optimise z
                 loss = train_step_z(image_batch, encoder, decoder, encoder_opt)

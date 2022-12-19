@@ -49,4 +49,5 @@ def preprocess(dataset):
     image = tf.image.resize(image, (240, 240))
     # todo: should this be 255?
     image = tf.cast(image, tf.float32) / 1.
+    # image = train_ds.prefetch(tf.data.experimental.AUTOTUNE)
     return image
