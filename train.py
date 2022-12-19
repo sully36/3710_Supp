@@ -18,7 +18,7 @@ depth = 12
 # todo: change the latent size? not sure if that is correct
 latent_size = 2
 z_size = (latent_size,)
-input_shape = (240, 256, 1)
+input_shape = (240, 240, 1)
 
 
 # optimizers

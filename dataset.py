@@ -44,10 +44,9 @@ def preprocess(dataset):
     :param dataset: the dataset that contains all the paths to the image.
     :return: the new datasets with the path to the image.
     """
-    # todo: fill out any preprocessing required.
     image = tf.io.read_file(dataset)
     image = tf.io.decode_jpeg(image, channels=1)
-    # todo: change the size of the image
-    image = tf.image.resize(image, (256, 256))
-    image = tf.cast(image, tf.float32) / 255.
+    image = tf.image.resize(image, (240, 240))
+    # todo: should this be 255?
+    image = tf.cast(image, tf.float32) / 1.
     return image
