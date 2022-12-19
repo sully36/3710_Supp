@@ -24,7 +24,7 @@ The ADNI dataset contains information of three different key groups (as referenc
 * elders with mild memory problems or mild cognitive impairments
 * elders with Alzheimer's disease dementia
 
-The data that we will be analyzing is of the magnetic resonance images (MRI) of the brain involving these three categories of participants. The initial training will be on the scans with Alzheimer's disease , but we will also do it on those normal elders to compare. The dataset come as a directory with train and test sub directories. We will only use the train subdirectory, where the AD directory within the train subdirectory contains the MRI images of brains of people with Alzheimer's Disease. At the end we will come back to the NC directory to compare with those without Alzheimer's. The images seem to be of stze `240 x 256 pixles` each. We will be changing this to `240 x 240 pixels` for ease of use and when looking at the images there is plenty of black space so this should not cut off any of the iimpotrant information of the images. 
+The data that we will be analyzing is of the magnetic resonance images (MRI) of the brain involving these three categories of participants. The initial training will be on the scans with Alzheimer's disease , but we will also do it on those normal elders to compare. The dataset come as a directory with train and test sub directories. We will only use the train subdirectory, where the AD directory within the train subdirectory contains the MRI images of brains of people with Alzheimer's Disease. At the end we will come back to the NC directory to compare with those without Alzheimer's. The images seem to be of stze `240 x 256 pixles` each. We will be changing this to `240 x 240 pixels` for ease of use and when looking at the images there is plenty of black space so this should not cut off any of the iimpotrant information of the images.
 
 ---
 
@@ -56,6 +56,17 @@ Matplotlib: 3.5.3
 
 ## Outputs of Trained Model
 
+### Reduced DataSet
+
+For initial training purposes, the dataset was cut down to only include 400 images so that it would be quicker and take less computing power to train. This is the output of the trained model after each epoch for when the dataset was reduced to 400 images
+
+#### Alzheimer's Disease Training
+
+<img src="images/AD_Small/image_at_epoch_0001.png" height="250px" width="300px" /><img src="images/AD_Small/image_at_epoch_0020.png" height="250px" width="300px" />
+
+
+#### Nurotypical Training 
+
 ---
 
 ## Plots
@@ -68,7 +79,10 @@ Matplotlib: 3.5.3
 
 ## Visualizations
 
+
 ---
+
+
 
 ## Answer to Report Question
 

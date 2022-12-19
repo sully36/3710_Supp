@@ -7,6 +7,7 @@ from module import train_step_vae, train_step_z, train_step_recon, build_vae
 import time
 from IPython import display
 from dataset import download_dataset
+import matplotlib.pyplot as plt
 
 # parameters
 epochs = 20
@@ -20,7 +21,7 @@ depth = 12
 latent_size = 2
 z_size = (latent_size,)
 input_shape = (240, 240, 1)
-
+seed = tf.random.normal([1, latent_size, 1])
 
 # optimizers
 encoder_opt = tf.keras.optimizers.Adam(1e-4)
@@ -29,6 +30,7 @@ vae_opt = tf.keras.optimizers.Adam(1e-4)
 
 # names
 model_name = "VAE-2D"
+testing_path = "./epoch_results./"
 
 
 # train networks
@@ -57,8 +59,8 @@ def train(dataset, vae, encoder, decoder):
             batch_losses += loss
             count += 1
         # Produce images for the GIF as we go
-        display.clear_output(wait=True)
-        # generate_and_save_images(decoder, epoch, seed)
+        # display.clear_output(wait=True)
+        generate_and_save_images(decoder, epoch, seed)
 
         loss = batch_losses / count
 
@@ -67,6 +69,18 @@ def train(dataset, vae, encoder, decoder):
         losses.append(loss)
 
     return losses
+
+
+def generate_and_save_images(model, epoch, test_input):
+    # Notice training is set to False
+    # This is so all layers run in inference mode (batchnorm)
+    predictions = model(test_input, training=False)
+    plt.figure()
+    plt.imshow(predictions[0, :, :, 0], cmap='gray')
+    plt.axis('off')
+    plt.title('Epoch {:04d}'.format(epoch))
+    plt.savefig('image_at_epoch_{:04d}.png'.format(epoch))
+    # plt.show()
 
 
 train_ds = download_dataset(batch_size)
