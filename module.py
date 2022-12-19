@@ -16,13 +16,12 @@ def decoder_network(input_shape, activation, depth, kernel, name='D'):
     """
     Decodes latent space into images
     """
-    # put you model here
     input = Input(input_shape, name=name + 'input')
     dense = Dense(128, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(input)
     dense = Dense(1024, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
 
-    dense = Dense(7 * 7 * depth * 2, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
-    dense = Reshape((7, 7, depth * 5))(dense)
+    dense = Dense(60 * 60 * depth * 2, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
+    dense = Reshape((60, 60, depth * 2))(dense)
     net = Conv2DTranspose(depth * 2, kernel_size=kernel, padding='same', strides=2, activation=LeakyReLU(alpha=0.1))(
         dense)
     net = Conv2DTranspose(depth, kernel_size=kernel, padding='same', strides=2, activation=LeakyReLU(alpha=0.1))(net)
@@ -36,7 +35,6 @@ def encoder_network(input_shape, depth, kernel, latent_size, name='E'):
     """
     Encodes images into latent space
     """
-    # put you model here
     input = Input(input_shape, name=name + 'input')
     # could use stride of 1 then use a max pooling but shakes prefers strides (said in lecture).
     net = Conv2D(depth, kernel_size=kernel, padding='same', strides=2, activation=LeakyReLU(alpha=0.1))(input)
@@ -45,7 +43,7 @@ def encoder_network(input_shape, depth, kernel, latent_size, name='E'):
     # 14x14. that was why we could do another down sampling by 2 but we cant do another one as we are at 7x7.
     dense = Flatten()(net)
     dense = Dense(1024, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
-    dense = Dense(1024, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
+    dense = Dense(128, activation=LeakyReLU(alpha=0.1), kernel_initializer=GlorotNormal())(dense)
     # usually latent_size needs to be 32 or 128 or something. he just did 2 to make plots easy.
     latent = Dense(latent_size, kernel_initializer=GlorotNormal())(dense)
 
