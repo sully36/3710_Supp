@@ -19,6 +19,7 @@ def download_dataset(batch_size):
     """
     # get all the image paths for the datasets. Then sort these.
     train_ds = sorted(glob.glob('./AD_NC/train/AD/*.jpeg'))
+    train_ds = train_ds[0:400:1]
     # shuffle
     train_ds = shuffle(train_ds)
     # make tensors

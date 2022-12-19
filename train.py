@@ -10,7 +10,8 @@ from dataset import download_dataset
 
 # parameters
 epochs = 20
-batch_size = 128
+batch_size = 20
+# batch_size = 128
 kernel = 3
 depth = 12
 
