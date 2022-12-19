@@ -62,8 +62,8 @@ def encoder_loss(latent):
         x_size = K.shape(x)[0]
         y_size = K.shape(y)[0]
         dim = K.shape(x)[1]
-        titles_x = K.title(K.reshape(x, [x_size, 1, dim]), [1, y_size, 1])
-        titles_y = K.title(K.reshape(y, [1, y_size, dim]), [x_size, 1, 1])
+        titles_x = K.tile(K.reshape(x, [x_size, 1, dim]), [1, y_size, 1])
+        titles_y = K.tile(K.reshape(y, [1, y_size, dim]), [x_size, 1, 1])
         # compute the Gaussian
         return K.exp(-K.mean(K.square(titles_x - titles_y), axis=2) / K.cast(dim, 'float32'))
 
@@ -76,8 +76,8 @@ def encoder_loss(latent):
     'so, we first get the mmd loss'
     'first, sample from random noise'
     batch_size = K.shape(latent)[0]
-    latent_dim = K.init_shape(latent)[1]
-    true_samples = K.random_normal(shape=(batch_size, latent_dim), mean=0, stdev=1.)
+    latent_dim = K.int_shape(latent)[1]
+    true_samples = K.random_normal(shape=(batch_size, latent_dim), mean=0, stddev=1.)
 
     'calculate mmd loss'
     loss_mmd = compute_mmd(true_samples, latent)
