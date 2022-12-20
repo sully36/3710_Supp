@@ -63,10 +63,10 @@ For initial training purposes, the dataset was cut down to only include 400 imag
 #### Alzheimer's Disease Training
 
 <img src="images/AD_Small/image_at_epoch_0001.png" height="250px" width="300px" /><img src="images/AD_Small/image_at_epoch_0020.png" height="250px" width="300px" />
-
+<img src="images/AD_Small/Losses.png" height="250px" width="300px" />
 #### Neurotypical Training 
 <img src="images/NC_Small/image_at_epoch_0001.png" height="250px" width="300px" /><img src="images/NC_Small/image_at_epoch_0020.png" height="250px" width="300px" />
-
+<img src="images/NC_Small/Losses.png" height="250px" width="300px" />
 
 ---
 

@@ -75,5 +75,13 @@ def generate_and_save_images(model, epoch, test_input):
 
 train_ds, train_ds_nc = download_dataset(batch_size)
 vae, encoder, decoder = build_vae(input_shape, z_size, latent_size, depth, kernel)
-# convergence = train(train_ds, vae, encoder, decoder)
-convergence = train(train_ds_nc, vae, encoder, decoder)
+convergence = train(train_ds, vae, encoder, decoder)
+# convergence = train(train_ds_nc, vae, encoder, decoder)
+
+plt.figure()
+plt.plot(range(0, epochs), convergence)
+plt.grid(True)
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.title('Loss over Training')
+plt.savefig('Losses.png')
