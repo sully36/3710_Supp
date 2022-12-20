@@ -30,11 +30,23 @@ def download_dataset(batch_size):
     # batch the data
     train_ds = train_ds.batch(batch_size)
 
+    train_ds_NC = sorted(glob.glob('./AD_NC/train/AD/*.jpeg'))
+    train_ds_NC = train_ds_NC[0:400:1]
+    # shuffle
+    train_ds_NC = shuffle(train_ds_NC)
+    # make tensors
+    train_ds_NC = tf.data.Dataset.from_tensor_slices(train_ds_NC)
+    # convert the file names into the images that we need.
+    train_ds_NC = train_ds_NC.map(preprocess)
+
+    # batch the data
+    train_ds_NC = train_ds_NC.batch(batch_size)
+
     # todo: check if this is needed
     # extra step in shakes vae example which changes them to nested numpy arrays
     # train_ds = tfds.as_numpy(train_ds)
 
-    return train_ds
+    return train_ds, train_ds_NC
 
 
 def preprocess(dataset):

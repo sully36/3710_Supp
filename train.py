@@ -33,38 +33,28 @@ model_name = "VAE-2D"
 testing_path = "./epoch_results./"
 
 
+def training_loop(dataset, encoder, decoder, vae, vae_opt, epoch):
+    count = 0
+    batch_losses = 0
+    for image_batch in dataset:
+        batch_losses += train_step_vae(image_batch, encoder, decoder, vae, vae_opt)
+        count += 1
+    # Produce images for the GIF as we go
+    # display.clear_output(wait=True)
+    generate_and_save_images(decoder, epoch, seed)
+    return batch_losses / count
+
+
 # train networks
 
-def train(dataset, vae, encoder, decoder):
+def train(train_ds, vae, encoder, decoder):
     losses = []
     for epoch in range(1, epochs + 1):
         start = time.time()
         # put train loop here
-        loss = -1
-        batch_losses = 0
-        switch = 1  # eppoch%3
-        msg = ""
-        count = 0
-        for image_batch in dataset:
-            # loss = train_step(image_batch)
-            if switch == 0:  # optimise z
-                loss = train_step_z(image_batch, encoder, decoder, encoder_opt)
-                msg = "optimise z"
-            elif switch == 2:  # optimise recon
-                loss = train_step_recon(image_batch, encoder, decoder, decoder_opt)
-                msg = "optimise recon"
-            else:  # optimise vae
-                loss = train_step_vae(image_batch, encoder, decoder, vae, vae_opt)
-                msg = "optimise vae"
-            batch_losses += loss
-            count += 1
-        # Produce images for the GIF as we go
-        # display.clear_output(wait=True)
-        generate_and_save_images(decoder, epoch, seed)
+        loss = training_loop(train_ds, encoder, decoder, vae, vae_opt, epoch)
 
-        loss = batch_losses / count
-
-        print('Time for epoch {} (loss {}, {}) is {} sec'.format(epoch, loss, msg, time.time() - start))
+        print('Time for epoch {} (loss {}) is {} sec'.format(epoch, loss, time.time() - start))
 
         losses.append(loss)
 
@@ -83,6 +73,7 @@ def generate_and_save_images(model, epoch, test_input):
     # plt.show()
 
 
-train_ds = download_dataset(batch_size)
+train_ds, train_ds_nc = download_dataset(batch_size)
 vae, encoder, decoder = build_vae(input_shape, z_size, latent_size, depth, kernel)
-convergence = train(train_ds, vae, encoder, decoder)
+# convergence = train(train_ds, vae, encoder, decoder)
+convergence = train(train_ds_nc, vae, encoder, decoder)
