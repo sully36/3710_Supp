@@ -17,34 +17,25 @@ def download_dataset(batch_size):
     :param batch_size: The size of the batches we are to separate the data into.
     :return: The dataset contain the images
     """
-    # get all the image paths for the datasets. Then sort these.
+    # Get the AD data
     train_ds = sorted(glob.glob('./AD_NC/train/AD/*.jpeg'))
-    train_ds = train_ds[0:400:1]
-    # shuffle
+    # This next line as used for early development and training processes to make computation and time not as heavy.
+    # train_ds = train_ds[0:400:1]
     train_ds = shuffle(train_ds)
-    # make tensors
     train_ds = tf.data.Dataset.from_tensor_slices(train_ds)
     # convert the file names into the images that we need.
     train_ds = train_ds.map(preprocess)
-
-    # batch the data
     train_ds = train_ds.batch(batch_size)
 
+    # Get the NC Data
     train_ds_NC = sorted(glob.glob('./AD_NC/train/AD/*.jpeg'))
-    train_ds_NC = train_ds_NC[0:400:1]
-    # shuffle
+    # This next line as used for early development and training processes to make computation and time not as heavy.
+    # train_ds_NC = train_ds_NC[0:400:1]
     train_ds_NC = shuffle(train_ds_NC)
-    # make tensors
     train_ds_NC = tf.data.Dataset.from_tensor_slices(train_ds_NC)
     # convert the file names into the images that we need.
     train_ds_NC = train_ds_NC.map(preprocess)
-
-    # batch the data
     train_ds_NC = train_ds_NC.batch(batch_size)
-
-    # todo: check if this is needed
-    # extra step in shakes vae example which changes them to nested numpy arrays
-    # train_ds = tfds.as_numpy(train_ds)
 
     return train_ds, train_ds_NC
 
@@ -60,7 +51,5 @@ def preprocess(dataset):
     image = tf.io.read_file(dataset)
     image = tf.io.decode_jpeg(image, channels=1)
     image = tf.image.resize(image, (240, 240))
-    # todo: should this be 255?
     image = tf.cast(image, tf.float32) / 1.
-    # image = train_ds.prefetch(tf.data.experimental.AUTOTUNE)
     return image
