@@ -28,7 +28,9 @@ The data that we will be analyzing is of the magnetic resonance images (MRI) of 
 
 ---
 
-## Description of the Files
+## About the Code
+
+### Description of the Files 
 
 **module.py:** Contains the code that creates the model for the autoencoder.
 
@@ -36,15 +38,17 @@ The data that we will be analyzing is of the magnetic resonance images (MRI) of 
 
 **train.py:** The main file used to run the project which will train the dataset and produce all outputs required.
 
----
+### Further Information:
 
-## Required for Running
+The creation of the VAE started off as the code Shakes had in the INFOVAE lecture and was modified for my purposes, as well as simplified to make it easier for the code to be understood for someone looking in.
 
-### File Location
+### Required for Running
+
+#### File Location
 
 Please add the dataset given to us within this directory and do not change any names. The pathway that will be predominantly used is the `./AD_NC/train/AD` pathway.
 
-### Versions Required
+#### Versions Required
 
 ```commandline
 Tensorflow: 2.10.0
@@ -68,22 +72,33 @@ For initial training purposes, the dataset was cut down to only include 400 imag
 <img src="images/NC_Small/image_at_epoch_0001.png" height="250px" width="300px" /><img src="images/NC_Small/image_at_epoch_0020.png" height="250px" width="300px" />
 <img src="images/NC_Small/Losses.png" height="250px" width="300px" />
 
+### Full DataSet
+
+Once the code was completed and debugged with the smaller dataset, the code was run on the full dataset provided.
+
+#### Alzheimer's Disease Training
+
+This was completed on all the images in the directory `./AD_NC/train/AD/`.
+
+<img src="images/AD_Big/image_at_epoch_0001.png" height="250px" width="300px" /><img src="images/AD_Big/image_at_epoch_0020.png" height="250px" width="300px" />
+<img src="images/AD_Big/Losses.png" height="250px" width="300px" />
+
+#### Neurotypical Training
+
+This was completed on the images in the directory `./AD_NC/train/NC/`.
+
+<img src="images/NC_Big/image_at_epoch_0001.png" height="250px" width="300px" /><img src="images/NC_Big/image_at_epoch_0020.png" height="250px" width="300px" />
+<img src="images/NC_Big/Losses.png" height="250px" width="300px" />
+
 ---
 
-## Plots
+## Breif Analysis of Plots
 
-### Convergence Plots
+When looking at all the comparisons between the Epoch 1 and 20 for both the large and the small datasets it is clear to see that all the models did train. While the small set is not necessary, as I did start testing on this set and I already had the outputs its actually quite interesting to compare them. The two key results to look at for this assignment is the Alzheimers's training data for both the big and small set. The training was also completed on the neurotypical training so that the question on the report could be answered.
 
-### Loss function Equations
-
----
-
-## Visualizations
-
+Overall the Alzheimer's dataset had the greatest loss at the begining of the training but gradually came down and by epoch 8 the graph of loss started to flatten out. The end loss of all the trainings ended very similar, being just above the 500 line. The one that is very different to the others is the Neurotypical training for the big dataset. The loss had evened out by about the third epoch, and stayed consistant. This to me meant that there where too many epochs, and the size of the batch should also be considered to be manipulated. Overall, the loss is still relatively high for every test, so I would consisder playing around with the batch size, number of epochs as well as the latent space size to see how this effected the training. However, all the outputs of epoch 20 are useful except for the big batch of the neurotypical data.
 
 ---
-
-
 
 ## Answer to Report Question
 
@@ -93,6 +108,12 @@ Do your visualizations show any relationship or separation with respect between 
 
 **Answer:**
 
-yes or no?
+Yes.
+
+When looking at both the full dataset and small batch datset for the neurotypical data, neither of them prodeuced very clear MRI scans when recomputing them. This could be becasuse the variables are not optimal for this dataset (latent size, batch size and number of epochs), or it could be because there is a large variance in the brain scans for the people that dont have Alzheimer's Disease. Now, without further testing and playing around with variables, this is the conclusion that I must come to from the results. Now it is quite clear in the Alzheimer's training that there are key parts of the brain that are highlighted or shadowed. In the full dataset output there are three key highlighted parts (front, middle, and bottom) and one key shaddowed part in the middle. Now this means that if someone was to have Alzheimer's disease we would be able to recognise this main pattern in the brain scan, while someone without Alzheimers could have anyother features, as the output is so vauge for the neurotypical training. 
+
+---
+
+
 
 ---
