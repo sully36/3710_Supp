@@ -12,7 +12,15 @@
 
 ## Description of Model
 
-The model constructed was a Variation Autoencoder (VAE). A VAE is based off the structure of an autoencoder, with extra steps of normalisation inbetween. An autoencoder combines two types of Convolutional Nural Networks (CNN) together; and encoder and decoder. CNN have multiple convolutional layers, usually with either a max pooling (decrease in the size of the data) or an upsampling (increasing in the size of the data) to connect layers. An encoder starts with the dataset and through multiple convolutional layers and max pooling results with an output of much smaller size. A decoder is the opposite. Starting with the input, it will go through the convolutional layers and upsampling to create an output with a larger size. An autoencoder is an encoder which has its output fed through a decoder.
+The model constructed was a Variation Autoencoder (VAE). A VAE is based off the structure of an autoencoder, with extra steps of normalisation inbetween. An autoencoder combines two types of Convolutional Nural Networks (CNN) together; and encoder and decoder. CNN have multiple convolutional layers, usually with either a max pooling (decrease in the size of the data) or an upsampling (increasing in the size of the data) to connect layers. An encoder starts with the dataset and through multiple convolutional layers and max pooling results with an output of much smaller size. A decoder is the opposite. Starting with the input, it will go through the convolutional layers and upsampling to create an output with a larger size. An autoencoder is an encoder which has its output fed through a decoder. The difference with the VAE to an autoencoder is that there is a normalisation layer after the encoder. This structure can be seen [here](https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73) in the following graph:
+
+<img src="images/VAE.png" height="300px" width="500px" />
+
+A more detailed structure of a VAE is from [here](https://analyticsindiamag.com/choosing-between-gan-or-encoder-decoder-architecture-for-ml-applications-is-like-comparing-apples-to-oranges/) which shows the basis on the convolutional layers within the encoder and decoder and how they connect:
+
+<img src="images/VAE2.png" height="300px" width="px" />
+
+Now this graph dhows that there are 6 convolutional layers in the encoder and the decoder. This would change based on the size of the input, as a smaller image you could only downsize so many times, whereas bigger images could have more layers, are a larger stride length to keep the number of layers the same but get the data down to a similar size.
 
 ---
 
@@ -40,7 +48,7 @@ The data that we will be analyzing is of the magnetic resonance images (MRI) of 
 
 ### Further Information:
 
-The creation of the VAE started off as the code Shakes had in the INFOVAE lecture and was modified for my purposes, as well as simplified to make it easier for the code to be understood for someone looking in.
+The creation of the VAE started off as the code Shakes had in the INFOVAE lecture and was modified for my purposes, as well as simplified to make it easier for the code to be understood for someone looking in. For this VAE I kept the two convolutional layers for the encoder and decoder. However, because of the image size we could definily do more layer if further testing was required. This would influence the output of the code, I would predict for the better as after two convolutional laters with a stride of 2 we only get the image down to a 60x60 pixel image, so this could be improved without using too much more comuting power.
 
 ### Required for Running
 
@@ -111,9 +119,6 @@ Do your visualizations show any relationship or separation with respect between 
 Yes.
 
 When looking at both the full dataset and small batch datset for the neurotypical data, neither of them prodeuced very clear MRI scans when recomputing them. This could be becasuse the variables are not optimal for this dataset (latent size, batch size and number of epochs), or it could be because there is a large variance in the brain scans for the people that dont have Alzheimer's Disease. Now, without further testing and playing around with variables, this is the conclusion that I must come to from the results. Now it is quite clear in the Alzheimer's training that there are key parts of the brain that are highlighted or shadowed. In the full dataset output there are three key highlighted parts (front, middle, and bottom) and one key shaddowed part in the middle. Now this means that if someone was to have Alzheimer's disease we would be able to recognise this main pattern in the brain scan, while someone without Alzheimers could have anyother features, as the output is so vauge for the neurotypical training. 
-
----
-
 
 
 ---
